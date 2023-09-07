@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Custom Prompts ChatGPT API</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='styles.css') }}"
+    />
+  </head>
+  <body>
+    <div class="App">
+      <div class="auth-form-container">
+        <h1>Custom Prompts ChatGPT API</h1>
+        <form id="intent-form" class="login-form">
+          <label for="prompt">Prompt</label>
+          <input
+            name="prompt"
+            id="prompt"
+            placeholder="Hello [First Name] [Last Name], your email is [Email]. You live in [City], [State]."
+          />
+          <button type="button" id="submit-btn">Process</button>
+          <div class="container">
+            <img
+              src="{{ url_for('static', filename='loading.gif') }}"
+              width="100"
+              id="loading"
+            />
+          </div>
+          <div id="result-container" class="result">
+            <h2>Response:</h2>
+            <p><br /></p>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      $(document).ready(function () {
+        function onSubmit(event) {
+          // Get the form values
+          event.preventDefault();
+          var prompt = $("#prompt").val();
+
+          if (prompt == "") {
+            alert("Please input correctly");
+            return;
+          }
+
+          $("#loading").css("display", "block");
+          $("#loading").css("margin-top", "20px");
+          $("#submit-btn").prop("disabled", true);
+          $("#submit-btn").css("background-color", "green");
+          // Make the AJAX request
+          $.ajax({
+            type: "POST",
+            url: "/",
+            contentType: "application/json",
+            data: JSON.stringify({ prompt: prompt }),
+            success: function (data) {
+              // Display the result in the result-container div
+              var resultContainer = $("#result-container");
+              $("#loading").css("display", "none");
+              $("#submit-btn").prop("disabled", false);
+              $("#submit-btn").css("background-color", "white");
+              resultContainer.html(
+                "<h2>Result:</h2><p>" + data.response + "</p>"
+              );
+            },
+            error: function (error) {
+              console.error("Error:", error);
+            },
+          });
+        }
+        $("#submit-btn").click(function (event) {
+          onSubmit(event);
+        });
+        $("#response").keypress(function (event) {
+          if (event.which === 13) {
+            onSubmit(event);
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
