@@ -14,11 +14,9 @@ apikey = os.environ["API_KEY"]
 openai.api_key = apikey
 
 emailjs_endpoint = "https://api.emailjs.com/api/v1.0/email/send"
-service_id = "service_fetv5k8"
-template_id = "template_5h1bvic"
-user_id = "7aQkQH0NpKEF62QXs"
-private_key = "PJ1TRAlupgVQDXpGK2XCz"
-from_email = "app.seed5406@gmail.com"
+service_id = "service_5peyvtk"
+template_id = "template_t9bmoxq"
+user_id = "_lo-TOzXvazKwRmAB"
 
 
 def main():
@@ -31,8 +29,7 @@ def main():
         gpt_response = get_gpt_response(custom_prompt)
 
         user_email = row["Email"]
-        user_email = "adamelmer0078@gmail.com"
-        user_name = row["First Name"] + " " + row["Last Name"]
+        user_name = row["First Name"]
         send_email("Your Weekly GPT Update", gpt_response, user_email, user_name)
 
 

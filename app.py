@@ -15,10 +15,9 @@ apikey = os.environ["API_KEY"]
 openai.api_key = apikey
 
 emailjs_endpoint = "https://api.emailjs.com/api/v1.0/email/send"
-service_id = "service_fetv5k8"
-template_id = "template_5h1bvic"
-user_id = "7aQkQH0NpKEF62QXs"
-private_key = "PJ1TRAlupgVQDXpGK2XCz"
+service_id = "service_5peyvtk"
+template_id = "template_qwhfcng"
+user_id = "_lo-TOzXvazKwRmAB"
 
 app = Flask(__name__)
 CORS(app)
@@ -26,7 +25,7 @@ CORS(app)
 
 def get_gpt_response(prompt):
     response = openai.Completion.create(
-        engine="text-davinci-003", prompt=prompt, max_tokens=150
+        engine="text-davinci-003", prompt=prompt, max_tokens=1500
     )
     return response.choices[0].text.strip()
 
@@ -107,10 +106,9 @@ def process():
             custom_prompt = create_custom_prompt(row, base_prompt)
             gpt_response = get_gpt_response(custom_prompt)
 
-            # user_email = row["Email"]
-            user_email = "adamelmer0078@gmail.com"
-            user_name = row["First Name"] + " " + row["Last Name"]
-            send_email("Your Weekly GPT Update", gpt_response, user_email, user_name)
+            user_email = row["Email"]
+            user_name = row["First Name"]
+            send_email("Email for Your Clients", gpt_response, user_email, user_name)
         return jsonify({"response": gpt_response})
 
     return render_template("index.html")
